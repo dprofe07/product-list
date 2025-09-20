@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Список {{ identifier }} | Список продуктов</title>
+        <style>
+            textarea {
+                width: 70%;
+                min-height: 300px;
+                resize: none;
+            }
+            a {
+                text-decoration: none;
+            }
+            .center {
+                text-align: center;
+            }
+        </style>
+    </head>
+
+    <body>
+        <h1><a href="../{{ identifier }}">Список {{ identifier }}</a></h1>
+        <p>Пишите здесь ваш список, каждый элемент с новой строки.</p>
+        <p>Чтобы отметить выбранным, добавьте в начало «!»</p>
+        <textarea id="area">{%- for i in range(lst.__len__()) -%}
+{{ "!" if lst[i].checked else "" }}{{ lst[i].text }}
+{% endfor -%}
+        </textarea>
+
+
+        <p class="center"><button onclick="save_data(true)">Сохранить</button><button onclick="save_data(false)">Применить</button></p>
+
+
+        <script lang="javascript">
+            let area = document.getElementById('area')
+            async function save_data(close) {
+                await fetch(
+                    "save_data",
+                    {
+                        method: "POST",
+                        body: area.value
+                    }
+                )
+                if (close) {
+                    document.location.href = '../{{ identifier }}'
+                }
+            }
+        </script>
+    </body>
+</html>

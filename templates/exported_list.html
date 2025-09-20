@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Список {{ identifier }} | Список продуктов</title>
+        <style>
+            a {
+                text-decoration: none;
+            }
+            textarea {
+                width: 70%;
+                min-height: 300px;
+                resize: none;
+                font-size: 2em;
+            }
+        </style>
+    </head>
+
+    <body>
+        <h1><a href="../{{ identifier }}">Список {{ identifier }}</a></h1>
+        <textarea readonly id="area">
+{%- for i in range(lst.__len__()) -%}
+{%- if lst[i].checked -%}
+- {{ lst[i].to_export_view() }}
+{% endif -%}
+{% endfor -%}
+        </textarea>
+        <p><button onclick="copy_text()">Копировать</button><button onclick="select_text()">Выделить</button></p>
+
+        <script>
+            if (!navigator.clipboard) {
+                navigator.permissions.query("clipboard-write")
+            }
+            let area = document.getElementById('area')
+            async function copy_text() {
+                await navigator.clipboard.writeText(area.value);
+            }
+
+            function select_text() {
+                area.select()
+            }
+        </script>
+
+    </body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Список {{ identifier }} | Список продуктов</title>
+        <style>
+            a {
+                text-decoration: none;
+            }
+        </style>
+    </head>
+
+    <body>
+        <h1>Список {{ identifier }} <a href="{{ identifier }}/edit">✏️</a></h1>
+        <script>
+            let cnt = {{ lst.__len__() }}
+        </script>
+        {% for i in range(lst.__len__()) %}
+            {{ lst[i].to_default_view(i) | safe }}
+        {% endfor %}
+        <p><button onclick="open_exported_page()">Экспорт</button></p>
+
+        <script lang="javascript">
+            //var qq = 0;
+            function open_exported_page() {
+                document.location.href = "../{{ identifier }}/exported"
+            }
+            function on_check_changed(chkIdx, state) {
+                fetch(`{{ identifier }}/chk_changed?id=${chkIdx}&state=${state ? 1 : 0}`)
+            }
+
+            function on_spinbox_changed(idx, spnIdx, value) {
+                fetch(`{{ identifier }}/spn_changed?id=${idx}&number=${spnIdx}&value=${value}`)
+            }
+            for (let i = 0; i < cnt; ++i) {
+                let q = document.getElementById(`chk_${i}`)
+                q.addEventListener("change", () => {
+                    on_check_changed(i, q.checked)
+                })
+                for (let j = 0, g=-1; j < q.parentElement.children.length; ++j) {
+                    let t = q.parentElement.children[j];
+                    if (t.tagName.toLowerCase() === "input" && t.id.startsWith("spn")) {
+                        t.addEventListener("change", (e) => {
+                            on_spinbox_changed(i, g, t.value);
+                        })
+                        /*t.addEventListener("input", () => {
+                            on_spinbox_changed(i, cnt_good, t.value);
+                        })*/
+                        g++;
+                    }
+                }
+            }
+        </script>
+    </body>
+</html>
