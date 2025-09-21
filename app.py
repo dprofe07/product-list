@@ -101,8 +101,7 @@ run_autosave = True
 def autosave():
     while run_autosave:
         ds.save()
-        print(ds.data)
-        time.sleep(1)
+        time.sleep(5)
 
 thr = Thread(target=autosave, daemon=True)
 thr.start()

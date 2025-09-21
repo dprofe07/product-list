@@ -4,7 +4,6 @@ import pickle
 
 class DataStorage:
     def __init__(self, filename):
-        print('INIT')
         self.filename = filename
         self.data = None
         self.open_or_create()

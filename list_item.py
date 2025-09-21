@@ -3,8 +3,8 @@ import re
 
 class ListItem:
     def __init__(self, text, checked=False):
+        self._checked = checked
         self.text = text
-        self.checked = checked
 
     def __repr__(self):
         return f"ListItem({self.text}, {self.checked})"
@@ -12,6 +12,14 @@ class ListItem:
     @property
     def is_label(self):
         return self.text.startswith('~')
+
+    @property
+    def checked(self):
+        return self._checked or self.is_label
+
+    @checked.setter
+    def checked(self, checked):
+        self._checked = checked
 
     def ifck(self, txt):
         if self.is_label:
@@ -21,14 +29,14 @@ class ListItem:
     def to_export_view(self):
         if self.is_label:
             return '----- ' + self.text[1:] + ' -----'
-        return re.sub(r'#\((\d+)\)', '\\1', self.text)
+        return '- ' + re.sub(r'#\((\d+)\)', '\\1', self.text)
 
     def to_editing_view(self):
         return self.ifck('!') + self.text
 
     def to_default_view(self, idx):
         if self.is_label:
-            return f'<p> ----- {self.text[1:]} -----</p>'
+            return f'<p style="font-size: 1.5em"> ----- {self.text[1:]} -----</p>'
         c = -1
         def proceed(m):
             nonlocal c

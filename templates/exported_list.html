@@ -21,7 +21,7 @@
         <textarea readonly id="area">
 {%- for i in range(lst.__len__()) -%}
 {%- if lst[i].checked -%}
-- {{ lst[i].to_export_view() }}
+{{ lst[i].to_export_view() }}
 {% endif -%}
 {% endfor -%}
         </textarea>
