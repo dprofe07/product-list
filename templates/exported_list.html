@@ -19,15 +19,26 @@
     <body>
         <h1><a href="../{{ identifier }}">Список {{ identifier }}</a></h1>
         <textarea readonly id="area">
+        </textarea>
+        <p><label>Показать заголовки<input type="checkbox" id="chk-show-labels" checked/></label></p>
+        <p><button onclick="copy_text()">Копировать</button><button onclick="select_text()">Выделить</button></p>
+
+        <script>
+            let textWithLabels = `
 {%- for i in range(lst.__len__()) -%}
 {%- if lst[i].checked -%}
 {{ lst[i].to_export_view() }}
 {% endif -%}
-{% endfor -%}
-        </textarea>
-        <p><button onclick="copy_text()">Копировать</button><button onclick="select_text()">Выделить</button></p>
+{% endfor -%}`
 
-        <script>
+            let textWithoutLabels = `
+{%- for i in range(lst.__len__()) -%}
+{%- if lst[i].checked and not lst[i].is_label -%}
+{{ lst[i].to_export_view() }}
+{% endif -%}
+{% endfor -%}`
+
+            area.value = textWithLabels;
             if (!navigator.clipboard) {
                 navigator.permissions.query("clipboard-write")
             }
@@ -39,6 +50,14 @@
             function select_text() {
                 area.select()
             }
+            let chk = document.getElementById("chk-show-labels");
+            chk.addEventListener("change", () => {
+                if (chk.checked) {
+                    area.value = textWithLabels;
+                } else {
+                    area.value = textWithoutLabels;
+                }
+            })
         </script>
 
     </body>
