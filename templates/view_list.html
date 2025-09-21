@@ -21,9 +21,8 @@
         <p><button onclick="open_exported_page()">Экспорт</button></p>
 
         <script lang="javascript">
-            //var qq = 0;
             function open_exported_page() {
-                document.location.href = "../{{ identifier }}/exported"
+                document.location.href = "{{ identifier }}/exported"
             }
             function on_check_changed(chkIdx, state) {
                 fetch(`{{ identifier }}/chk_changed?id=${chkIdx}&state=${state ? 1 : 0}`)

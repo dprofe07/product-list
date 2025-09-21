@@ -1,3 +1,4 @@
+import os
 import re
 import time
 from threading import Thread
@@ -10,24 +11,30 @@ from list_item import ListItem
 
 app = Flask(__name__)
 ds = DataStorage("data.dat")
-@app.route('/')
+
+if os.path.exists("/SERVER/is_server"):
+    prefix = '/product-list'
+else:
+    prefix = ''
+
+@app.route(prefix + '/')
 def index():
     return render_template('index.html')
 
-@app.route('/<identifier>')
+@app.route(prefix + '/<identifier>')
 def get_list_at(identifier):
     if identifier not in ds.data:
         ds.data[identifier] = []
     return render_template('view_list.html', identifier=identifier, lst=ds.data[identifier])
 
-@app.route('/<identifier>/edit')
+@app.route(prefix + '/<identifier>/edit')
 def edit_list_at(identifier):
     if identifier not in ds.data:
         ds.data[identifier] = []
     return render_template('edit_list.html', identifier=identifier, lst=ds.data[identifier])
 
 
-@app.route('/<identifier>/chk_changed')
+@app.route(prefix + '/<identifier>/chk_changed')
 def on_chk_change(identifier):
     try:
         id_ = int(request.args.get('id'))
@@ -43,7 +50,7 @@ def on_chk_change(identifier):
 
 #spn_changed?id=${idx}&number=${spnIdx}&value=${value}
 
-@app.route('/<identifier>/spn_changed')
+@app.route(prefix + '/<identifier>/spn_changed')
 def on_spn_change(identifier):
     try:
         id_ = int(request.args.get('id'))
@@ -67,7 +74,7 @@ def on_spn_change(identifier):
     print(ds.data[identifier])
     return ''
 
-@app.route('/<identifier>/save_data', methods=['POST'])
+@app.route(prefix + '/<identifier>/save_data', methods=['POST'])
 def save_data(identifier):
     data = request.data.decode('utf-8')
     if identifier not in ds.data:
@@ -85,14 +92,14 @@ def save_data(identifier):
     return '', 200
 
 
-@app.route('/<identifier>/exported')
+@app.route(prefix + '/<identifier>/exported')
 def exported(identifier):
     if identifier not in ds.data:
         ds.data[identifier] = []
     return render_template('exported_list.html', identifier=identifier, lst=ds.data[identifier])
 
 
-@app.route('/save')
+@app.route(prefix + '/save')
 def save():
     ds.save()
     return redirect('/')
