@@ -36,7 +36,7 @@ class ListItem:
 
     def to_default_view(self, idx):
         if self.is_label:
-            return f'<p style="font-size: 1.5em"> ----- {self.text[1:]} -----</p>'
+            return f'<span style="font-size: 1.5em"> ----- {self.text[1:]} -----</span>'
         c = -1
         def proceed(m):
             nonlocal c
@@ -44,4 +44,4 @@ class ListItem:
             return f'<input type="number" min="0" max="15" step="1" value="{m.group(1)}" id="spn_{idx}_{c}"/>'
         prep_text = re.sub(r'#\((\d+)\)', proceed, self.text)
 
-        return f'''<p><label><input type="checkbox" id="chk_{idx}" {self.ifck('checked')}/>{prep_text}</label></p>'''
+        return f'''<span style="display: block;"><label><input type="checkbox" id="chk_{idx}" {self.ifck('checked')}/>{prep_text}</label></span>'''
