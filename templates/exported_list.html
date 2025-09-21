@@ -38,11 +38,11 @@
 {% endif -%}
 {% endfor -%}`
 
+            let area = document.getElementById('area')
             area.value = textWithLabels;
             if (!navigator.clipboard) {
                 navigator.permissions.query("clipboard-write")
             }
-            let area = document.getElementById('area')
             async function copy_text() {
                 await navigator.clipboard.writeText(area.value);
             }
