@@ -64,7 +64,7 @@ def on_spn_change(identifier):
 
 
 @app.route(prefix + '/<identifier>/clear-selection')
-def on_spn_change(identifier):
+def clear_selection(identifier):
     if identifier not in ds.data:
         return '', 400
 
