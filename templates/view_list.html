@@ -18,11 +18,15 @@
         {% for i in range(lst.__len__()) %}
             {{ lst[i].to_default_view(i) | safe }}
         {% endfor %}
-        <p><button onclick="open_exported_page()">Экспорт</button></p>
+        <p><button onclick="open_exported_page()">Экспорт</button><button onclick="clear_selection()">Очистить</button></p>
 
         <script lang="javascript">
             function open_exported_page() {
                 document.location.href = "{{ identifier }}/exported"
+            }
+            async function clear_selection() {
+                await fetch(`{{ identifier }}/clear-selection`)
+                document.location.reload();
             }
             function on_check_changed(chkIdx, state) {
                 fetch(`{{ identifier }}/chk_changed?id=${chkIdx}&state=${state ? 1 : 0}`)

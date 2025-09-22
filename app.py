@@ -48,8 +48,6 @@ def on_chk_change(identifier):
     ds.data[identifier][id_].checked = bool(state)
     return ''
 
-#spn_changed?id=${idx}&number=${spnIdx}&value=${value}
-
 @app.route(prefix + '/<identifier>/spn_changed')
 def on_spn_change(identifier):
     try:
@@ -62,16 +60,16 @@ def on_spn_change(identifier):
         number = None
     if identifier not in ds.data or id_ is None or value is None or number is None:
         return '', 400
+    return ''
 
-    cnt = -1
-    def change(m):
-        nonlocal cnt
-        cnt += 1
-        if cnt == number:
-            return f'#({value})'
-        return m.group()
-    ds.data[identifier][id_].text = re.sub(r'#\(\d+\)', change, ds.data[identifier][id_].text)
-    print(ds.data[identifier])
+
+@app.route(prefix + '/<identifier>/clear-selection')
+def on_spn_change(identifier):
+    if identifier not in ds.data:
+        return '', 400
+
+    for i in ds.data[identifier]:
+        i.checked = False
     return ''
 
 @app.route(prefix + '/<identifier>/save_data', methods=['POST'])
