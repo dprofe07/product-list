@@ -60,6 +60,7 @@ def on_spn_change(identifier):
         number = None
     if identifier not in ds.data or id_ is None or value is None or number is None:
         return '', 400
+    ds.data[identifier][id_].set_spn(number, value)
     return ''
 
 

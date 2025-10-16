@@ -45,3 +45,6 @@ class ListItem:
         prep_text = re.sub(r'#\((\d+)\)', proceed, self.text)
 
         return f'''<span style="display: block;"><label><input type="checkbox" id="chk_{idx}" {self.ifck('checked')}/>{prep_text}</label></span>'''
+
+    def set_spn(self, number, value):
+        self.text = re.sub(rf'((?:#\((\d+)\)[^#]*){{{number - 1}}})#\((\d+)\)', rf'\1#({value})', self.text, 1)
