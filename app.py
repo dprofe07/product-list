@@ -3,8 +3,7 @@ import re
 import time
 from threading import Thread
 
-from bottle import redirect
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
 
 from data_storage import DataStorage
 from list_item import ListItem

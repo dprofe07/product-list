@@ -3,6 +3,7 @@
 <html>
     <head>
         <title>Список {{ identifier }} | Список продуктов</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <style>
             a {
                 text-decoration: none;
@@ -18,7 +19,8 @@
         {% for i in range(lst.__len__()) %}
             {{ lst[i].to_default_view(i) | safe }}
         {% endfor %}
-        <p><button onclick="open_exported_page()">Экспорт</button><button onclick="clear_selection()">Очистить</button></p>
+        <p><button onclick="open_exported_page()">Экспорт</button>
+            <button onclick="clear_selection()">Очистить</button></p>
 
         <script lang="javascript">
             function open_exported_page() {
