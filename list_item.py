@@ -22,6 +22,10 @@ class ListItem:
         self._checked = checked
 
     def ifck(self, txt):
+        """
+        :param txt:
+        :return: txt if checked and is not label
+        """
         if self.is_label:
             return ''
         return txt if self.checked else ''

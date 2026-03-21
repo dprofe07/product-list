@@ -26,16 +26,16 @@
 
         <script>
             let textWithLabels = `
-{%- for i in range(lst.__len__()) -%}
-{%- if lst[i].checked -%}
-{{ lst[i].to_export_view() }}
+{%- for it in lst.items -%}
+{%- if it.checked -%}
+{{ it.to_export_view() }}
 {% endif -%}
 {% endfor -%}`
 
             let textWithoutLabels = `
-{%- for i in range(lst.__len__()) -%}
-{%- if lst[i].checked and not lst[i].is_label -%}
-{{ lst[i].to_export_view() }}
+{%- for it in lst.items -%}
+{%- if it.checked and not it.is_label -%}
+{{ it.to_export_view() }}
 {% endif -%}
 {% endfor -%}`
 

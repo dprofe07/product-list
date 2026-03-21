@@ -6,6 +6,7 @@ from threading import Thread
 from flask import Flask, render_template, request, redirect
 
 from data_storage import DataStorage
+from list_class import List
 from list_item import ListItem
 
 app = Flask(__name__)
@@ -23,13 +24,13 @@ def index():
 @app.route(prefix + '/<identifier>')
 def get_list_at(identifier):
     if identifier not in ds.data:
-        ds.data[identifier] = []
+        ds.data[identifier] = List()
     return render_template('view_list.html', identifier=identifier, lst=ds.data[identifier])
 
 @app.route(prefix + '/<identifier>/edit')
 def edit_list_at(identifier):
     if identifier not in ds.data:
-        ds.data[identifier] = []
+        ds.data[identifier] = List()
     return render_template('edit_list.html', identifier=identifier, lst=ds.data[identifier])
 
 
@@ -44,7 +45,8 @@ def on_chk_change(identifier):
     if identifier not in ds.data or id_ is None or state is None:
         return '', 400
 
-    ds.data[identifier][id_].checked = bool(state)
+    ds.data[identifier].items[id_].checked = bool(state)
+    ds.data[identifier].change()
     return ''
 
 @app.route(prefix + '/<identifier>/spn_changed')
@@ -59,7 +61,8 @@ def on_spn_change(identifier):
         number = None
     if identifier not in ds.data or id_ is None or value is None or number is None:
         return '', 400
-    ds.data[identifier][id_].set_spn(number, value)
+    ds.data[identifier].items[id_].set_spn(number, value)
+    ds.data[identifier].change()
     return ''
 
 
@@ -68,8 +71,9 @@ def clear_selection(identifier):
     if identifier not in ds.data:
         return '', 400
 
-    for i in ds.data[identifier]:
+    for i in ds.data[identifier].items:
         i.checked = False
+    ds.data[identifier].change()
     return ''
 
 @app.route(prefix + '/<identifier>/save_data', methods=['POST'])
@@ -86,14 +90,14 @@ def save_data(identifier):
             i = i[1:]
         res.append(ListItem(i, checked))
 
-    ds.data[identifier] = res
+    ds.data[identifier] = List(res)
     return '', 200
 
 
 @app.route(prefix + '/<identifier>/exported')
 def exported(identifier):
     if identifier not in ds.data:
-        ds.data[identifier] = []
+        ds.data[identifier] = List()
     return render_template('exported_list.html', identifier=identifier, lst=ds.data[identifier])
 
 

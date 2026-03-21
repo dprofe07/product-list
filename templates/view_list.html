@@ -13,11 +13,12 @@
 
     <body>
         <h1>Список {{ identifier }} <a href="{{ identifier }}/edit">✏️</a></h1>
+        <p>Последнее изменение: <i>{{ lst.str_time() }}</i></p>
         <script>
-            let cnt = {{ lst.__len__() }}
+            let cnt = {{ lst.items.__len__() }}
         </script>
-        {% for i in range(lst.__len__()) %}
-            {{ lst[i].to_default_view(i) | safe }}
+        {% for i in range(lst.items.__len__()) %}
+            {{ lst.items[i].to_default_view(i) | safe }}
         {% endfor %}
         <p><button onclick="open_exported_page()">Экспорт</button>
             <button onclick="clear_selection()">Очистить</button></p>
