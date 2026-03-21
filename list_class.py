@@ -12,4 +12,4 @@ class List:
 
     def str_time(self):
         t = datetime.fromtimestamp(self.last_change_time)
-        return f"{t.strftime('%Y-%m-%d %H:%Ma')} ({(datetime.now() - t).days} дней назад)"
+        return f"{t.strftime('%Y-%m-%d %H:%M')} ({(datetime.now() - t).days} дней назад)"
