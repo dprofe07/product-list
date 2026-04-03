@@ -16,6 +16,7 @@ def migrate_to_version1(data):
         'list_name': List(
             items=[ListItem...],
             last_change_time=timestamp
+            last_export_time=timestamp
         )
     }"""
     print("Migrated to: v1")

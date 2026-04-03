@@ -46,7 +46,7 @@ def on_chk_change(identifier):
         return '', 400
 
     ds.data[identifier].items[id_].checked = bool(state)
-    ds.data[identifier].change()
+    ds.data[identifier].write_change()
     return ''
 
 @app.route(prefix + '/<identifier>/spn_changed')
@@ -62,7 +62,7 @@ def on_spn_change(identifier):
     if identifier not in ds.data or id_ is None or value is None or number is None:
         return '', 400
     ds.data[identifier].items[id_].set_spn(number, value)
-    ds.data[identifier].change()
+    ds.data[identifier].write_change()
     return ''
 
 
@@ -73,7 +73,7 @@ def clear_selection(identifier):
 
     for i in ds.data[identifier].items:
         i.checked = False
-    ds.data[identifier].change()
+    ds.data[identifier].write_change()
     return ''
 
 @app.route(prefix + '/<identifier>/save_data', methods=['POST'])
@@ -98,6 +98,7 @@ def save_data(identifier):
 def exported(identifier):
     if identifier not in ds.data:
         ds.data[identifier] = List()
+    ds.data[identifier].write_export()
     return render_template('exported_list.html', identifier=identifier, lst=ds.data[identifier])
 
 

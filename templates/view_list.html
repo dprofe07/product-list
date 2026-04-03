@@ -13,7 +13,8 @@
 
     <body>
         <h1>Список {{ identifier }} <a href="{{ identifier }}/edit">✏️</a></h1>
-        <p>Последнее изменение: <i>{{ lst.str_time() }}</i></p>
+        <p>Последнее изменение: <i>{{ lst.str_change_time() }}</i></p>
+        <p>Последний экспорт: <i>{{ lst.str_export_time() }}</i></p>
         <script>
             let cnt = {{ lst.items.__len__() }}
         </script>
@@ -26,6 +27,7 @@
         <script lang="javascript">
             function open_exported_page() {
                 document.location.href = "{{ identifier }}/exported"
+                // todo change hardcoded urls
             }
             async function clear_selection() {
                 await fetch(`{{ identifier }}/clear-selection`)
