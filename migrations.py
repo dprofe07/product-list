@@ -16,7 +16,6 @@ def migrate_to_version1(data):
         'list_name': List(
             items=[ListItem...],
             last_change_time=timestamp
-            last_export_time=timestamp
         )
     }"""
     print("Migrated to: v1")
@@ -27,9 +26,26 @@ def migrate_to_version1(data):
     return res
 
 
+def migrate_to_version2(data):
+    """{
+        'list_name': List(
+            items=[ListItem...],
+            last_change_time=timestamp,
+            last_export_time=timestamp
+        )
+    }"""
+    print("Migrated to: v2")
+    res = {}
+    for key, val in data.items():
+        res[key] = List(val)
+    res["##migration_version"] = 2
+    return res
+
+
 MIGRATIONS = [
     migrate_to_version0,
-    migrate_to_version1
+    migrate_to_version1,
+    migrate_to_version2,
 ]
 
 def migrate(data):
