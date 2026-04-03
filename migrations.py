@@ -21,6 +21,8 @@ def migrate_to_version1(data):
     print("Migrated to: v1")
     res = {}
     for key, val in data.items():
+        if key == "##migration_version":
+            continue
         res[key] = List(val)
     res["##migration_version"] = 1
     return res
@@ -37,7 +39,9 @@ def migrate_to_version2(data):
     print("Migrated to: v2")
     res = {}
     for key, val in data.items():
-        res[key] = List(val)
+        if key == "##migration_version":
+            continue
+        res[key] = List(val.items, val.last_change_time)
     res["##migration_version"] = 2
     return res
 
